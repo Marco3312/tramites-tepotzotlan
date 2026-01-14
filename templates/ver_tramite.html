@@ -88,9 +88,18 @@
             </div>
         {% endif %}
 
-        <div class="nav-buttons">
-            <a href="{{ url_for('seleccion_tramites') }}"><button class="nav-button">Volver a Selección</button></a>
-        </div>
-    </div>
+        <div class="action-buttons">
+    <a href="{{ url_for('seleccion_tramites') }}">
+        <button class="btn-action btn-volver">Volver a Selección</button>
+    </a>
+
+    {% if user_type == 'admin' %}
+        <form method="POST" action="{{ url_for('eliminar_tramite', id=tramite['id']) }}" 
+              onsubmit="return confirm('¿Realmente quieres ELIMINAR este trámite completo? Esta acción NO se puede deshacer.');">
+            <button type="submit" class="btn-action btn-eliminar">Eliminar Trámite Completo</button>
+        </form>
+    {% endif %}
+</div>
 </body>
+
 </html>
