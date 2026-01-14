@@ -217,7 +217,7 @@ def ver_tramite(id):
     conn.close()
 
     return render_template('ver_tramite.html', tramite=tramite, user_type=session.get('user_type'), historial=historial)
-@app.route('/eliminar_tramite/<int:id>', methods=['POST'])
+
 @requiere_login
 @app.route('/eliminar_tramite/<int:id>', methods=['POST'])
 @requiere_login
@@ -257,6 +257,7 @@ def uploaded_file(filename):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
 
