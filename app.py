@@ -217,10 +217,41 @@ def ver_tramite(id):
     conn.close()
 
     return render_template('ver_tramite.html', tramite=tramite, user_type=session.get('user_type'), historial=historial)
+    @app.route('/eliminar_tramite/<int:id>', methods=['POST'])
+@requiere_login
+def eliminar_tramite(id):
+    if session.get('user_type') != 'admin':
+        flash('No tienes permisos para eliminar trámites.')
+        return redirect(url_for('ver_tramite', id=id))
+    
+    conn = get_db_connection()
+    c = conn.cursor()
+    
+    # Borrar PDFs del disco 
+    tramite = c.execute('SELECT pdfs FROM tramites WHERE id = ?', (id,)).fetchone()
+    if tramite and tramite['pdfs']:
+        pdfs = tramite['pdfs'].split(',')
+        for pdf in pdfs:
+            pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], pdf.strip())
+            if os.path.exists(pdf_path):
+                os.remove(pdf_path)
+    
+    # Borrar historial relacionado
+    c.execute('DELETE FROM historial WHERE tramite_id = ?', (id,))
+    
+    # Borrar el trámite
+    c.execute('DELETE FROM tramites WHERE id = ?', (id,))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Trámite eliminado completamente.')
+    return redirect(url_for('seleccion_tramites'))
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
+
     app.run(debug=True)
