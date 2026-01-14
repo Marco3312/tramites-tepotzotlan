@@ -458,4 +458,58 @@ body {
     background-color: #c82333;
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(220, 53, 69, 0.6);
+
+}
+
+/* Contenedor para botones de acción - centrado perfecto */
+.action-buttons {
+    display: flex;
+    justify-content: center;          /* Centra horizontalmente */
+    align-items: center;              /* Alinea verticalmente */
+    gap: 30px;                        /* Espacio entre botones */
+    flex-wrap: wrap;                  /* Se adapta a pantallas pequeñas */
+    margin: 40px 0 20px 0;
+    width: 100%;
+}
+
+/* Estilo unificado para todos los botones de acción */
+.btn-action {
+    width: 320px;                     /* Ancho fijo igual para ambos */
+    min-height: 70px;                 /* Altura mínima igual */
+    padding: 18px 30px;               /* Padding igual */
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Volver a Selección - naranja */
+.btn-volver {
+    background-color: #f28c38;
+    color: white;
+}
+
+.btn-volver:hover {
+    background-color: #e07b30;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(242, 140, 56, 0.4);
+}
+
+/* Eliminar - rojo */
+.btn-eliminar {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(220, 53, 69, 0.5);
 }
