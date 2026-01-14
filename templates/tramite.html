@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir Trámite - {{ tipo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+    </div>
+    <div class="container">
+        <h1>Subir: {{ tipo }}</h1>
+
+        <!-- NOTA IMPORTANTE -->
+        <div class="nota-importante">
+            <strong>Importante:</strong> Solo se permiten archivos <strong>PDF</strong> | Máximo <strong>10MB</strong> por archivo
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p class="error">{{ messages[0] }}</p>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" id="upload-form">
+            <label>Nombre del Trámite:</label><br>
+            <input type="text" name="nombre" required><br><br>
+
+            <label>Notas Iniciales (opcional):</label><br>
+            <textarea name="notes" rows="4" cols="50"></textarea><br><br>
+
+            {% if tipo == 'Constancia de Ingresos' %}
+                <label>Copia de INE:</label>
+                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-ine">Listo</span><br><br>
+
+                <label>Recibo de nómina:</label>
+                <input type="file" name="nomina" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-nomina">Listo</span><br><br>
+
+                <label>Acta de nacimiento:</label>
+                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-acta">Listo</span><br><br>
+
+                <label>Actas de dependientes (si aplica):</label>
+                <input type="file" name="dependientes" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-dependientes">Listo</span><br><br>
+
+            {% elif tipo == 'Constancia de Pertenencia' %}
+                <label>Copia de INE:</label>
+                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-ine">Listo</span><br><br>
+
+                <label>Acta de nacimiento:</label>
+                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-acta">Listo</span><br><br>
+
+            {% elif tipo == 'Constancia de Vecindad' %}
+                <label>Copia de INE:</label>
+                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-ine">Listo</span><br><br>
+
+                <label>Informe de vivienda:</label>
+                <input type="file" name="informe" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-informe">Listo</span><br><br>
+
+                <label>Acta de nacimiento o CURP:</label>
+                <input type="file" name="curp" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-curp">Listo</span><br><br>
+
+            {% elif tipo == 'Constancia de No Pertenencia' %}
+                <label>Escrito dirigido al secretario:</label>
+                <input type="file" name="escrito" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-escrito">Listo</span><br><br>
+
+                <label>Documentos de propiedad:</label>
+                <input type="file" name="propiedad" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-propiedad">Listo</span><br><br>
+
+                <label>Copia de INE o carta poder:</label>
+                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-ine">Listo</span><br><br>
+
+            {% elif tipo == 'Trámite de Cartilla' %}
+                <label>Acta de nacimiento:</label>
+                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-acta">Listo</span><br><br>
+
+                <label>Comprobante de domicilio:</label>
+                <input type="file" name="domicilio" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-domicilio">Listo</span><br><br>
+
+                <label>Comprobante de estudios:</label>
+                <input type="file" name="estudios" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-estudios">Listo</span><br><br>
+
+                <label>4 fotografías:</label>
+                <input type="file" name="fotos" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-fotos">Listo</span><br><br>
+
+                <label>Constancia remitida (opcional):</label>
+                <input type="file" name="remitida" accept=".pdf" onchange="mostrarListo(this)">
+                <span class="listo" id="listo-remitida">Listo</span><br><br>
+            {% endif %}
+
+            <button type="submit">Guardar Trámite</button>
+        </form>
+
+        <div class="nav-buttons">
+            <a href="{{ url_for('seleccion_tramites') }}"><button class="nav-button">Volver a Selección</button></a>
+        </div>
+    </div>
+
+    <script>
+        function mostrarListo(input) {
+            const listo = document.getElementById('listo-' + input.name);
+            if (input.files.length > 0) {
+                listo.style.display = 'inline';
+                listo.style.color = 'green';
+                listo.style.fontWeight = 'bold';
+                listo.style.marginLeft = '10px';
+                listo.style.fontSize = '18px';
+            } else {
+                listo.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

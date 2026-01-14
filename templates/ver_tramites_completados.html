@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Trámites Completados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+    </div>
+    <div class="container">
+        <h1>Trámites Completados</h1>
+
+        <!-- BARRA DE BÚSQUEDA -->
+        <div class="filtros-container">
+            <input type="text" id="buscar" placeholder="Buscar por nombre..." onkeyup="filtrarTabla()">
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p class="error">{{ messages[0] }}</p>
+            {% endif %}
+        {% endwith %}
+
+        {% if tramites %}
+            <table class="tramites-table" id="tabla-tramites">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tr in tramites %}
+                        <tr>
+                            <td>{{ tr['nombre'] }}</td>
+                            <td>{{ tr['estatus'] }}</td>
+                            <td>
+                                <a href="{{ url_for('ver_tramite', id=tr['id']) }}">
+                                    Ver{% if user_type == 'admin' %}/Modificar{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay trámites completados.</p>
+        {% endif %}
+
+        <div class="nav-buttons">
+            <a href="{{ url_for('seleccion_tramites') }}"><button class="nav-button">Volver a Selección</button></a>
+        </div>
+    </div>
+
+    <!-- JavaScript para búsqueda -->
+    <script>
+        function filtrarTabla() {
+            const input = document.getElementById('buscar').value.toLowerCase();
+            const filas = document.querySelectorAll('#tabla-tramites tbody tr');
+
+            filas.forEach(fila => {
+                const nombre = fila.cells[0].textContent.toLowerCase();
+                fila.style.display = nombre.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

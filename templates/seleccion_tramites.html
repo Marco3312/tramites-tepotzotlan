@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Selección de Trámites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+    </div>
+    <div class="container">
+        <h1>Selección de Trámites</h1>
+        <p>Bienvenido, <strong>{{ session['username'] }}</strong></p>
+
+        <!-- CONTADOR ROJO -->
+        {% if user_type == 'admin' and por_revision > 0 %}
+            <div class="contador-rojo">
+                <span class="badge">{{ por_revision }}</span>
+                Trámites por revisión
+            </div>
+        {% endif %}
+
+        <!-- BOTONES DE TRÁMITES -->
+        <div class="grid-tramites">
+            <a href="{{ url_for('tramite', tipo='Constancia de Ingresos') }}">
+                <button class="btn-principal">Constancia de Ingresos</button>
+            </a>
+            <a href="{{ url_for('tramite', tipo='Constancia de Pertenencia') }}">
+                <button class="btn-principal">Constancia de Pertenencia</button>
+            </a>
+            <a href="{{ url_for('tramite', tipo='Constancia de Vecindad') }}">
+                <button class="btn-principal">Constancia de Vecindad</button>
+            </a>
+            <a href="{{ url_for('tramite', tipo='Constancia de No Pertenencia') }}">
+                <button class="btn-principal">Constancia de No Pertenencia</button>
+            </a>
+            <a href="{{ url_for('tramite', tipo='Trámite de Cartilla') }}">
+                <button class="btn-principal">Trámite de Cartilla</button>
+            </a>
+        </div>
+
+        <!-- BOTONES SECUNDARIOS -->
+        <div class="grid-tramites" style="margin-top: 40px;">
+            {% if user_type == 'admin' %}
+                <a href="{{ url_for('ver_tramites') }}">
+                    <button class="btn-principal">Ver Todos los Trámites</button>
+                </a>
+            {% endif %}
+            <a href="{{ url_for('ver_tramites_completados') }}">
+                <button class="btn-principal">Concluidos</button>
+            </a>
+        </div>
+
+        <!-- BOTÓN CERRAR SESIÓN - RESALTADO Y CENTRADO -->
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="{{ url_for('logout') }}">
+                <button class="btn-cerrar-sesion">Cerrar Sesión</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

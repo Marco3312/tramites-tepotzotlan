@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Trámite: {{ tramite['nombre'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+    </div>
+    <div class="container">
+        <h1>Trámite: {{ tramite['nombre'] }}</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <p class="error">{{ messages[0] }}</p>
+            {% endif %}
+        {% endwith %}
+
+        <p><strong>Tipo:</strong> 
+            {% if tramite['tipo_tramite'] == 'Constancia de Ingresos' %}Ingresos
+            {% elif tramite['tipo_tramite'] == 'Constancia de Pertenencia' %}Pertenencia
+            {% elif tramite['tipo_tramite'] == 'Constancia de Vecindad' %}Vecindad
+            {% elif tramite['tipo_tramite'] == 'Constancia de No Pertenencia' %}No Pertenencia
+            {% elif tramite['tipo_tramite'] == 'Trámite de Cartilla' %}Cartilla{% endif %}
+        </p>
+        <p><strong>Estatus:</strong> {{ tramite['estatus'] }}</p>
+
+        <h2>Archivos Subidos:</h2>
+        <ul>
+            {% for pdf in tramite['pdfs'].split(',') %}
+                <li>
+                    <a href="{{ url_for('uploaded_file', filename=pdf) }}" target="_blank">{{ pdf }}</a>
+                    {% if user_type == 'admin' %}
+                        <form method="POST" enctype="multipart/form-data" style="display:inline;">
+                            <input type="file" name="reemplazar" accept=".pdf">
+                            <button type="submit">Reemplazar</button>
+                        </form>
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="eliminar" value="{{ pdf }}">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <h2>Notas:</h2>
+        <p>{{ tramite['notes'] or 'No hay notas.' }}</p>
+
+        {% if user_type == 'admin' %}
+            <form method="POST">
+                <label>Editar Notas:</label><br>
+                <textarea name="notes" rows="6" cols="50">{{ tramite['notes'] }}</textarea><br>
+                <button type="submit">Guardar Notas</button>
+            </form>
+
+            <h2>Cambiar Estatus:</h2>
+            <form method="POST">
+                <select name="estatus">
+                    <option value="En trámite" {% if tramite['estatus'] == 'En trámite' %}selected{% endif %}>En trámite</option>
+                    <option value="Pausado" {% if tramite['estatus'] == 'Pausado' %}selected{% endif %}>Pausado</option>
+                    <option value="Cancelado" {% if tramite['estatus'] == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                    <option value="Por revisión" {% if tramite['estatus'] == 'Por revisión' %}selected{% endif %}>Por revisión</option>
+                    <option value="Completado" {% if tramite['estatus'] == 'Completado' %}selected{% endif %}>Completado</option>
+                </select>
+                <button type="submit">Actualizar</button>
+            </form>
+        {% endif %}
+
+        <!-- HISTORIAL DE CAMBIOS (solo admin) -->
+        {% if user_type == 'admin' and historial %}
+            <h2>Historial de Cambios</h2>
+            <div class="historial-container">
+                {% for h in historial %}
+                    <div class="historial-item">
+                        <strong>{{ h['fecha'] }}</strong> - 
+                        <em>{{ h['usuario'] }}</em>: 
+                        {{ h['accion'] }}
+                        {% if h['valor_anterior'] != h['valor_nuevo'] %}
+                            <br><small>
+                                De: <span style="color: #d9534f;">{{ h['valor_anterior'] }}</span> → 
+                                A: <span style="color: #5cb85c;">{{ h['valor_nuevo'] }}</span>
+                            </small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="nav-buttons">
+            <a href="{{ url_for('seleccion_tramites') }}"><button class="nav-button">Volver a Selección</button></a>
+        </div>
+    </div>
+</body>
+</html>

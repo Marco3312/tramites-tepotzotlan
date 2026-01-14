@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+   <html lang="es">
+   <head>
+       <meta charset="UTF-8">
+       <title>Requisitos de Trámites - Tepotzotlán</title>
+       <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+       <script>
+           function toggleRequisitos(id) {
+               const content = document.getElementById(id);
+               if (content.style.display === "none" || content.style.display === "") {
+                   content.style.display = "block";
+               } else {
+                   content.style.display = "none";
+               }
+           }
+       </script>
+   </head>
+   <body>
+       <div class="login-button">
+           <a href="{{ url_for('login') }}"><button class="nav-button">Iniciar Sesión</button></a>
+       </div>
+       <div class="logo-container">
+           <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+       </div>
+       <div class="container">
+           <h1>Requisitos para Trámites - Tepotzotlán</h1>
+           <p>Seleccione un trámite para ver los documentos requeridos:</p>
+           <div class="requisitos-container">
+               <button class="tramite-button" onclick="toggleRequisitos('ingresos')">Constancia de Ingresos</button>
+               <div id="ingresos" class="requisitos-content">
+                   <ul>
+                       <li>Copia de INE</li>
+                       <li>Recibo de nómina</li>
+                       <li>Acta de nacimiento</li>
+                       <li>Actas de nacimiento de dependientes</li>
+                   </ul>
+               </div>
+               <button class="tramite-button" onclick="toggleRequisitos('pertenencia')">Constancia de Pertenencia</button>
+               <div id="pertenencia" class="requisitos-content">
+                   <ul>
+                       <li>Copia de INE</li>
+                       <li>Acta de nacimiento</li>
+                   </ul>
+               </div>
+               <button class="tramite-button" onclick="toggleRequisitos('vecindad')">Constancia de Vecindad</button>
+               <div id="vecindad" class="requisitos-content">
+                   <ul>
+                       <li>Copia de INE</li>
+                       <li>Informe de vivienda</li>
+                       <li>Acta de nacimiento o CURP</li>
+                   </ul>
+               </div>
+               <button class="tramite-button" onclick="toggleRequisitos('no-pertenencia')">Constancia de No Pertenencia</button>
+               <div id="no-pertenencia" class="requisitos-content">
+                   <ul>
+                       <li>Escrito dirigido al secretario</li>
+                       <li>Documentos de propiedad</li>
+                       <li>Copia de INE o carta poder</li>
+                   </ul>
+               </div>
+               <button class="tramite-button" onclick="toggleRequisitos('cartilla')">Trámite de Cartilla (Clase 2007 y Remisos)</button>
+               <div id="cartilla" class="requisitos-content">
+                   <ul>
+                       <li>Acta de nacimiento</li>
+                       <li>Comprobante de domicilio</li>
+                       <li>Comprobante de estudios</li>
+                       <li>4 fotografías</li>
+                       <li>Constancia remitida (opcional)</li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+   </body>
+   </html>

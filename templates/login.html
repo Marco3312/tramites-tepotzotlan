@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+   <html lang="es">
+   <head>
+       <meta charset="UTF-8">
+       <title>Bienvenida - Sistema de Trámites Tepotzotlán</title>
+       <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+   </head>
+   <body>
+       <div class="logo-container">
+           <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Tepotzotlán" class="logo">
+       </div>
+       <div class="container">
+           <h1>Bienvenido al Sistema de Trámites</h1>
+           {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                   <p class="error">{{ messages[0] }}</p>
+               {% endif %}
+           {% endwith %}
+           <form method="POST">
+               <label for="username">Nombre de Usuario:</label><br>
+               <input type="text" id="username" name="username" required><br>
+               <label for="password">Contraseña:</label><br>
+               <input type="password" id="password" name="password" required><br>
+               <button type="submit">Iniciar Sesión</button>
+           </form>
+           <div class="nav-buttons">
+               <a href="{{ url_for('requisitos') }}"><button class="nav-button">Ver Requisitos de Trámites</button></a>
+           </div>
+       </div>
+   </body>
+   </html>
