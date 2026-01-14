@@ -229,7 +229,7 @@ def eliminar_tramite(id):
     conn = get_db_connection()
     c = conn.cursor()
     
-    # Borrar PDFs del disco
+    # Borrar PDFs del disco si existen
     tramite = c.execute('SELECT pdfs FROM tramites WHERE id = ?', (id,)).fetchone()
     if tramite and tramite['pdfs']:
         pdfs = tramite['pdfs'].split(',')
@@ -238,10 +238,10 @@ def eliminar_tramite(id):
             if os.path.exists(pdf_path):
                 os.remove(pdf_path)
     
-    # Borrar historial
+    # Borrar historial relacionado
     c.execute('DELETE FROM historial WHERE tramite_id = ?', (id,))
     
-    # Borrar trámite
+    # Borrar el trámite
     c.execute('DELETE FROM tramites WHERE id = ?', (id,))
     
     conn.commit()
@@ -257,4 +257,5 @@ def uploaded_file(filename):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
