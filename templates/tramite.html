@@ -32,75 +32,75 @@
 
             {% if tipo == 'Constancia de Ingresos' %}
                 <label>Copia de INE:</label>
-                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="ine" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-ine">Listo</span><br><br>
 
                 <label>Recibo de nómina:</label>
-                <input type="file" name="nomina" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="nomina" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-nomina">Listo</span><br><br>
 
                 <label>Acta de nacimiento:</label>
-                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="acta" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-acta">Listo</span><br><br>
 
                 <label>Actas de dependientes (si aplica):</label>
-                <input type="file" name="dependientes" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="dependientes" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-dependientes">Listo</span><br><br>
 
             {% elif tipo == 'Constancia de Pertenencia' %}
                 <label>Copia de INE:</label>
-                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="ine" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-ine">Listo</span><br><br>
 
                 <label>Acta de nacimiento:</label>
-                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="acta" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-acta">Listo</span><br><br>
 
             {% elif tipo == 'Constancia de Vecindad' %}
                 <label>Copia de INE:</label>
-                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="ine" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-ine">Listo</span><br><br>
 
                 <label>Informe de vivienda:</label>
-                <input type="file" name="informe" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="informe" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-informe">Listo</span><br><br>
 
                 <label>Acta de nacimiento o CURP:</label>
-                <input type="file" name="curp" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="curp" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-curp">Listo</span><br><br>
 
             {% elif tipo == 'Constancia de No Pertenencia' %}
                 <label>Escrito dirigido al secretario:</label>
-                <input type="file" name="escrito" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="escrito" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-escrito">Listo</span><br><br>
 
                 <label>Documentos de propiedad:</label>
-                <input type="file" name="propiedad" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="propiedad" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-propiedad">Listo</span><br><br>
 
                 <label>Copia de INE o carta poder:</label>
-                <input type="file" name="ine" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="ine" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-ine">Listo</span><br><br>
 
             {% elif tipo == 'Trámite de Cartilla' %}
                 <label>Acta de nacimiento:</label>
-                <input type="file" name="acta" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="acta" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-acta">Listo</span><br><br>
 
                 <label>Comprobante de domicilio:</label>
-                <input type="file" name="domicilio" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="domicilio" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-domicilio">Listo</span><br><br>
 
                 <label>Comprobante de estudios:</label>
-                <input type="file" name="estudios" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="estudios" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-estudios">Listo</span><br><br>
 
                 <label>4 fotografías:</label>
-                <input type="file" name="fotos" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="fotos" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-fotos">Listo</span><br><br>
 
                 <label>Constancia remitida (opcional):</label>
-                <input type="file" name="remitida" accept=".pdf" onchange="mostrarListo(this)">
+                <input type="file" name="remitida" accept=".pdf" onchange="validarArchivo(this)">
                 <span class="listo" id="listo-remitida">Listo</span><br><br>
             {% endif %}
 
@@ -126,5 +126,41 @@
             }
         }
     </script>
+    <script>
+ function validarArchivo(input) {
+    const file = input.files[0];
+    const check = document.getElementById('listo-' + input.name);
+
+    // Si no hay archivo seleccionado, ocultar "Listo"
+    if (!file) {
+        check.style.display = 'none';
+        return;
+    }
+
+    // 1. Validar que sea .pdf
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+        alert('Solo se permiten archivos PDF.');
+        input.value = ''; // Borra el archivo inválido
+        check.style.display = 'none';
+        return;
+    }
+
+    // 2. Validar tamaño máximo 10 MB
+    if (file.size > 10 * 1024 * 1024) {
+        alert('El archivo es demasiado grande. Máximo permitido: 10 MB.');
+        input.value = ''; // Borra el archivo grande
+        check.style.display = 'none';
+        return;
+    }
+
+    // Si todo está bien → mostrar "Listo" en verde
+    check.style.display = 'inline';
+    check.style.color = 'green';
+    check.style.fontWeight = 'bold';
+    check.style.marginLeft = '10px';
+    check.style.fontSize = '18px';
+}
+</script>
 </body>
+
 </html>
